@@ -1,0 +1,6 @@
+{% extends 'store/base.html' %}
+{% block title %}Order #{{ order.id }} — NOVA{% endblock %}
+{% block content %}
+<section class="page-intro compact"><p class="eyebrow">ORDER CONFIRMATION</p><h1>Order <em>#{{ order.id }}.</em></h1><p>Status: <strong>{{ order.get_status_display }}</strong></p></section>
+<div class="order-detail"><h2>Items</h2>{% for item in order.items.all %}<div class="order-row"><span>{{ item.product_name }} × {{ item.quantity }}</span><strong>₹{{ item.price }}</strong></div>{% endfor %}<hr><div class="order-row"><strong>Total</strong><strong>₹{{ order.total }}</strong></div><h2>Delivery details</h2><p>{{ order.full_name }}<br>{{ order.address }}<br>{{ order.city }} – {{ order.postal_code }}<br>{{ order.phone }}</p></div>
+{% endblock %}

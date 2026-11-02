@@ -1,0 +1,27 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>{% block title %}NOVA — Curated essentials{% endblock %}</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Playfair+Display:wght@500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="{% static 'css/style.css' %}">
+</head>
+<body>
+<header class="site-header">
+  <a class="logo" href="{% url 'home' %}">NOVA<span>.</span></a>
+  <nav><a href="{% url 'product_list' %}">Shop</a><a href="{% url 'order_history' %}">My orders</a><a href="/admin/">Admin</a></nav>
+  <div class="header-actions">
+    {% if user.is_authenticated %}
+      <span class="hello">Hi, {{ user.username }}</span>
+      <form method="post" action="{% url 'logout' %}">{% csrf_token %}<button class="link-btn">Log out</button></form>
+    {% else %}<a href="{% url 'login' %}">Log in</a><a href="{% url 'register' %}">Sign up</a>{% endif %}
+    <a class="cart-link" href="{% url 'cart' %}">Bag <span>{{ cart_count }}</span></a>
+  </div>
+</header>
+{% if messages %}<div class="messages">{% for message in messages %}<div class="message">{{ message }}</div>{% endfor %}</div>{% endif %}
+<main>{% block content %}{% endblock %}</main>
+<footer><div class="logo">NOVA<span>.</span></div><p>Thoughtful finds. Everyday essentials.</p><small>© {% now "Y" %} NOVA Store · Portfolio demonstration project</small></footer>
+</body>
+</html>

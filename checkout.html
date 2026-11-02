@@ -1,0 +1,15 @@
+{% extends 'store/base.html' %}
+{% block title %}Checkout — NOVA{% endblock %}
+{% block content %}
+<section class="page-intro compact"><p class="eyebrow">ALMOST YOURS</p><h1>Secure <em>checkout.</em></h1></section>
+<section class="checkout-layout">
+ <form method="post" class="checkout-form">{% csrf_token %}<h2>Delivery details</h2>
+ <label>Full name<input name="full_name" required value="{{ user.get_full_name }}"></label>
+ <label>Email address<input type="email" name="email" required value="{{ user.email }}"></label>
+ <label>Phone number<input name="phone" required pattern="[0-9+ -]{8,16}"></label>
+ <label>Address<textarea name="address" rows="3" required></textarea></label>
+ <div class="two-fields"><label>City<input name="city" required></label><label>Postal code<input name="postal_code" required></label></div>
+ <button class="button dark full">Continue to payment ↗</button></form>
+ <aside class="summary"><h2>Your order</h2>{% for row in rows %}<div><span>{{ row.product.name }} × {{ row.quantity }}</span><strong>₹{{ row.line_total }}</strong></div>{% endfor %}<hr><div class="total"><span>Total</span><strong>₹{{ total }}</strong></div></aside>
+</section>
+{% endblock %}

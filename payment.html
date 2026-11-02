@@ -1,0 +1,33 @@
+{% extends 'store/base.html' %}
+{% block title %}Payment — NOVA{% endblock %}
+{% block content %}
+<section class="payment-box"><p class="eyebrow">SECURE PAYMENT</p><h1>Complete your <em>order.</em></h1><p>Order #{{ order.id }} · Total ₹{{ order.total }}</p><p class="fine-print">Razorpay test mode only. No real money should be charged.</p><button id="pay-button" class="button dark">Pay ₹{{ order.total }} with Razorpay</button><p id="payment-status" role="status"></p></section>
+<script src="https://checkout.razorpay.com/v1/checkout.js"></script>
+<script>
+const payButton = document.getElementById("pay-button");
+payButton.addEventListener("click", function () {
+  const options = {
+    key: "{{ razorpay_key|escapejs }}",
+    amount: "{{ amount_paise }}",
+    currency: "INR",
+    name: "NOVA Store",
+    description: "Order #{{ order.id }}",
+    order_id: "{{ razorpay_order_id|escapejs }}",
+    handler: async function (response) {
+      const result = await fetch("{% url 'verify_payment' %}", {
+        method: "POST",
+        headers: {"Content-Type": "application/json", "X-CSRFToken": "{{ csrf_token }}"},
+        body: JSON.stringify({...response, local_order_id: "{{ order.id }}"})
+      });
+      const data = await result.json();
+      if (data.ok) window.location.href = data.redirect;
+      else document.getElementById("payment-status").textContent = data.error || "Verification failed.";
+    },
+    prefill: {name: "{{ order.full_name|escapejs }}", email: "{{ order.email|escapejs }}", contact: "{{ order.phone|escapejs }}"},
+    theme: {color: "#1e2b27"},
+    modal: {ondismiss: function(){document.getElementById("payment-status").textContent="Payment window closed. Your order remains pending.";}}
+  };
+  new Razorpay(options).open();
+});
+</script>
+{% endblock %}

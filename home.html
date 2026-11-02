@@ -1,0 +1,16 @@
+{% extends 'store/base.html' %}
+{% block content %}
+<section class="hero">
+ <div class="hero-copy"><p class="eyebrow">THE EVERYDAY EDIT — 2026</p><h1>Find your<br><em>new favourites.</em></h1><p class="hero-text">A considered collection of useful, beautiful things for the way you live.</p><a class="button dark" href="{% url 'product_list' %}">Explore the collection <span>↗</span></a></div>
+ <div class="hero-art"><div class="art-label">CURATED<br>FOR YOU</div><div class="art-orbit"></div><div class="art-product">N</div></div>
+</section>
+<section class="section">
+ <div class="section-heading"><div><p class="eyebrow">SHOP YOUR WAY</p><h2>Explore categories</h2></div><a class="text-link" href="{% url 'product_list' %}">View all ↗</a></div>
+ <div class="category-row">{% for category in categories %}<a class="category-chip" href="{% url 'product_list' %}?category={{ category.slug }}">{{ category.name }} <span>↗</span></a>{% empty %}<p>Add categories in Django admin to show them here.</p>{% endfor %}</div>
+</section>
+<section class="section">
+ <div class="section-heading"><div><p class="eyebrow">HANDPICKED FOR YOU</p><h2>Featured pieces</h2></div><a class="text-link" href="{% url 'product_list' %}">Shop all products ↗</a></div>
+ <div class="product-grid">{% for product in featured %}{% include 'store/partials/product_card.html' %}{% empty %}<p class="empty">No featured products yet. Add products in <a href="/admin/">Django admin</a>.</p>{% endfor %}</div>
+</section>
+<section class="newsletter"><p class="eyebrow">A LITTLE NOTE FROM NOVA</p><h2>Good things, thoughtfully chosen.</h2><p>Discover pieces that make everyday life feel a little more considered.</p><a class="button light" href="{% url 'product_list' %}">Start exploring ↗</a></section>
+{% endblock %}

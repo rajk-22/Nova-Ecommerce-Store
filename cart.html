@@ -1,0 +1,9 @@
+{% extends 'store/base.html' %}
+{% block title %}Your bag — NOVA{% endblock %}
+{% block content %}
+<section class="page-intro compact"><p class="eyebrow">YOUR SELECTION</p><h1>Your <em>bag.</em></h1></section>
+<section class="cart-layout">
+ <div>{% for row in rows %}<div class="cart-row"><div class="cart-thumb">{% if row.product.image_url %}<img src="{{ row.product.image_url }}" alt="">{% else %}N{% endif %}</div><div class="cart-info"><h3>{{ row.product.name }}</h3><p>₹{{ row.product.price }}</p><form method="post" action="{% url 'update_cart' row.product.id %}">{% csrf_token %}<label>Qty <input type="number" name="quantity" min="1" max="{{ row.product.stock }}" value="{{ row.quantity }}"></label><button class="small-btn">Update</button></form><form method="post" action="{% url 'remove_from_cart' row.product.id %}">{% csrf_token %}<button class="remove-btn">Remove</button></form></div><strong>₹{{ row.line_total }}</strong></div>{% empty %}<div class="empty-cart"><h2>Your bag is waiting.</h2><p>Find something lovely to bring home.</p><a class="button dark" href="{% url 'product_list' %}">Explore products</a></div>{% endfor %}</div>
+ {% if rows %}<aside class="summary"><h2>Order summary</h2><div><span>Subtotal</span><strong>₹{{ total }}</strong></div><div><span>Shipping</span><span>Calculated at checkout</span></div><hr><div class="total"><span>Total</span><strong>₹{{ total }}</strong></div><a class="button dark full" href="{% url 'checkout' %}">Continue to checkout ↗</a><p class="fine-print">Payments are processed in test mode for this portfolio demo.</p></aside>{% endif %}
+</section>
+{% endblock %}

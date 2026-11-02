@@ -1,0 +1,6 @@
+{% extends 'store/base.html' %}
+{% block title %}My orders — NOVA{% endblock %}
+{% block content %}
+<section class="page-intro compact"><p class="eyebrow">YOUR NOVA ACCOUNT</p><h1>Order <em>history.</em></h1></section>
+<div class="orders-list">{% for order in orders %}<a class="order-row" href="{% url 'order_detail' order.id %}"><div><strong>Order #{{ order.id }}</strong><p>{{ order.created_at|date:"d M Y, H:i" }}</p></div><span class="status {{ order.status|lower }}">{{ order.get_status_display }}</span><strong>₹{{ order.total }}</strong></a>{% empty %}<p>You haven't placed any orders yet.</p><a class="text-link" href="{% url 'product_list' %}">Start shopping ↗</a>{% endfor %}</div>
+{% endblock %}

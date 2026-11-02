@@ -1,38 +1,77 @@
-# Nova-Ecommerce-Store
-A modern, responsive Django-based e-commerce web application featuring product management, user authentication, shopping cart, order tracking, and Razorpay test payment integration.
+# NOVA — Django E-commerce Store
 
-# NOVA – E-commerce Store
+A responsive portfolio e-commerce project built with Django, SQLite, HTML, CSS, JavaScript and Razorpay Checkout (test mode).
 
-NOVA is a modern and responsive e-commerce web application developed using Python and Django. It provides a smooth online shopping experience with an elegant user interface and essential e-commerce functionalities.
+## 1. Requirements
+- Python 3.10+
+- VS Code
+- Internet connection for Google Fonts, product image URLs and Razorpay Checkout
 
-## Features
-- Modern and responsive shopping interface
-- Product listing and detailed product pages
-- Product search and category filtering
-- User registration, login and authentication
-- Shopping cart with session-based persistence
-- Checkout and order management
-- Customer order history
-- Django admin panel for product and category management
-- Razorpay test-mode payment integration
-- SQLite database management
+## 2. Open the project
+Extract the ZIP, open the `nova_cart` folder in VS Code, then open the VS Code terminal.
 
-## Technologies Used
-- **Backend:** Python, Django
-- **Frontend:** HTML, CSS, JavaScript
-- **Database:** SQLite
-- **Payment Gateway:** Razorpay (Test Mode)
-- **Tools:** VS Code, Git, GitHub
+Windows PowerShell:
+```powershell
+py -m venv venv
+.\venv\Scripts\Activate.ps1
+pip install -r requirements.txt
+copy .env.example .env
+py manage.py migrate
+py manage.py createsuperuser
+py manage.py runserver
+```
+Open http://127.0.0.1:8000/
 
-## Project Purpose
-This project demonstrates practical knowledge of full-stack web development, Django database models, authentication, session management, CRUD operations and payment gateway integration.
+If PowerShell blocks activation, run:
+```powershell
+Set-ExecutionPolicy -Scope Process -ExecutionPolicy Bypass
+.\venv\Scripts\Activate.ps1
+```
 
-## Future Enhancements
-- Wishlist functionality
-- Product reviews and ratings
-- Order status notifications
-- Advanced product filters
-- PostgreSQL database integration
-- Payment webhook handling
+## 3. Add categories and products
+Go to http://127.0.0.1:8000/admin/ and log in with the superuser account.
+- Add categories first.
+- Add products and select a category.
+- Add a public image URL, price, stock and description.
+- Mark a few products as Featured.
 
-**Project Type:** Full-Stack Web Development Portfolio Project
+The Django admin is your store management panel. Never give customers staff/admin access.
+
+## 4. Razorpay test mode
+1. Create a Razorpay account and open its Test Mode dashboard.
+2. Generate Test API Key ID and Key Secret.
+3. Put them in `.env`:
+```
+RAZORPAY_KEY_ID=rzp_test_xxxxxxxxx
+RAZORPAY_KEY_SECRET=xxxxxxxxxxxxxxxx
+```
+4. Restart the Django server.
+5. Sign up as a customer, add products to the cart, and checkout.
+6. Use Razorpay's current official test payment details from its documentation/dashboard. Do not use real card details or enable live mode for this demo.
+
+## 5. Important routes
+- `/` Home
+- `/products/` Product catalogue
+- `/cart/` Cart
+- `/checkout/` Checkout (login required)
+- `/orders/` Customer order history
+- `/admin/` Django admin
+
+## 6. Portfolio / production notes
+This is a learning and portfolio starter, not a production-ready commerce system. Before public deployment:
+- Set a strong `DJANGO_SECRET_KEY`, `DJANGO_DEBUG=False`, and correct `ALLOWED_HOSTS`.
+- Use PostgreSQL and HTTPS.
+- Configure secure cookies, logging, backups, email and proper deployment static-file handling.
+- Add payment webhooks and reconciliation. A customer browser callback alone is not a complete payment lifecycle.
+- Add inventory reservation/locking and idempotent webhook handling for high-concurrency sales.
+- Add tests for permissions, cart stock limits, order totals and payment verification.
+- Add server-side validation for all checkout fields and order status transitions.
+- Consider moving cart persistence from session-only storage to a database cart for cross-device persistence.
+
+## 7. What to explain in an interview
+- Django models represent Category, Product, Order and OrderItem.
+- Django authentication handles registration and login.
+- Sessions keep the shopping cart between page visits in the same browser.
+- Django admin provides protected product and order management.
+- Razorpay creates a server-side payment order; the server verifies the payment signature.
+- SQLite is used locally; production apps commonly use PostgreSQL.

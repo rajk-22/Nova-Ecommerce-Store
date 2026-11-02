@@ -1,0 +1,12 @@
+{% extends 'store/base.html' %}
+{% block title %}Shop — NOVA{% endblock %}
+{% block content %}
+<section class="page-intro"><p class="eyebrow">THE NOVA COLLECTION</p><h1>Objects for <em>every day.</em></h1><p>Explore the collection and find something you'll love.</p></section>
+<section class="shop-layout">
+ <aside class="filters"><h3>Categories</h3><a class="{% if not selected_category %}active{% endif %}" href="{% url 'product_list' %}">All products</a>{% for category in categories %}<a class="{% if selected_category == category.slug %}active{% endif %}" href="?category={{ category.slug }}">{{ category.name }}</a>{% endfor %}</aside>
+ <div class="shop-main">
+  <form class="search-form" method="get"><input name="q" value="{{ query }}" placeholder="Search the collection..."><input type="hidden" name="category" value="{{ selected_category }}"><button>Search ↗</button></form>
+  <div class="product-grid">{% for product in products %}{% include 'store/partials/product_card.html' %}{% empty %}<p>No products found. Try another search.</p>{% endfor %}</div>
+ </div>
+</section>
+{% endblock %}

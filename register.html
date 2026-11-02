@@ -1,0 +1,2 @@
+{% extends 'store/base.html' %}
+{% block content %}<section class="auth-card"><p class="eyebrow">JOIN THE NOVA COMMUNITY</p><h1>Create an <em>account.</em></h1><form method="post">{% csrf_token %}{{ form.as_p }}<button class="button dark full">Create account</button></form><p>Already registered? <a href="{% url 'login' %}">Log in</a></p></section>{% endblock %}
